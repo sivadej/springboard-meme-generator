@@ -4,6 +4,10 @@ const resetBtn = document.querySelector('#reset-btn');
 const examples = document.querySelector('#examples');
 let statusMsg = document.querySelector('#status');
 
+
+function main(){
+	
+}
 //Retrieve valid form inputs and send to createMemeCard function for HTML display.
 insertImgBtn.addEventListener('click', function(e){
 	e.preventDefault();
@@ -11,22 +15,18 @@ insertImgBtn.addEventListener('click', function(e){
 	const inputTopText = document.querySelector('#top-text-input').value;
 	const inputBottomText = document.querySelector('#bottom-text-input').value;
 	if (inputUrl && (inputTopText || inputBottomText)) {
-		// image URL and either top or bottom text input required
-		document.querySelector('h2').style.visibility = 'visible'; //reveal 'Your Creations' header
+		// input validation: require image URL and either top or bottom text input
+		document.querySelector('h2').style.visibility = 'visible'; //reveal hidden header on first submission
 		const newMeme = { inputUrl, inputTopText, inputBottomText };
 		createMemeCard(newMeme);
 		clearForm();
 	}
 	else {
-		statusMsg.innerText = 'Enter a valid URL and at least one text field.';
+		displayMessage('Enter a valid URL and at least one text field.');
 	}
 });
 
-resetBtn.addEventListener('click', function(e){
-	e.preventDefault();
-	clearForm();
-});
-
+//fill input fields with selected example
 examples.addEventListener('click', function(e){
 	e.preventDefault();
 	clearForm();
@@ -48,14 +48,6 @@ examples.addEventListener('click', function(e){
 	}
 });
 
-function clearForm(){
-	statusMsg.innerText = '';
-	const formInputs = document.querySelectorAll('input');
-	for (let input of formInputs) {
-		input.value = '';
-	}
-}
-
 function createMemeCard(meme){
 	//Create 'meme card' div element, prepend to gallery section
 	const memeCard = document.createElement('div');
@@ -66,8 +58,6 @@ function createMemeCard(meme){
         <div class="bottom-middle meme-text">${meme.inputBottomText}</div>
         <div class="delete-meme">[ <a href="#">Delete</a> ]</div>
         `;
-	creationsArea.prepend(memeCard);
-
 	//listener for delete
 	const deleteBtn = memeCard.querySelector('a');
 	deleteBtn.addEventListener('click', function(e){
@@ -75,4 +65,26 @@ function createMemeCard(meme){
 		let confirmDelete = confirm('Are you sure you want to delete this meme?');
 		if (confirmDelete) memeCard.remove();
 	});
+	displayMemeCard(memeCard);
+}
+
+resetBtn.addEventListener('click', function(e){
+	e.preventDefault();
+	clearForm();
+});
+
+function clearForm(){
+	displayMessage('');
+	const formInputs = document.querySelectorAll('input');
+	for (let input of formInputs) {
+		input.value = '';
+	}
+}
+
+function displayMemeCard(card){
+	creationsArea.prepend(card);
+}
+
+function displayMessage(msg){
+	statusMsg.innerText = msg;
 }
