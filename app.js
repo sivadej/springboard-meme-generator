@@ -4,10 +4,6 @@ const resetBtn = document.querySelector('#reset-btn');
 const examples = document.querySelector('#examples');
 let statusMsg = document.querySelector('#status');
 
-
-function main(){
-	
-}
 //Retrieve valid form inputs and send to createMemeCard function for HTML display.
 insertImgBtn.addEventListener('click', function(e){
 	e.preventDefault();
